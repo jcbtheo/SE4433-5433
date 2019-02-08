@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>KWIC</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        function SubmitText() {
+            dataJSON = $('#inputBox').val();
+            $.ajax({
+                url: '/api/Kwic',
+                type: 'POST',
+                //data: $('#inputBox').val(),
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    $('#outputBox').val(response.data);
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <textarea id="inputBox" rows="10" cols="40"></textarea>
+    </div>
+    <div>
+        <textarea id="outputBox" rows="10" cols="40"></textarea>
+    </div>
+    <div>
+        <button type="button" id="submit" onclick="SubmitText()">Submit</button>
+    </div>
+</body>
+</html>
