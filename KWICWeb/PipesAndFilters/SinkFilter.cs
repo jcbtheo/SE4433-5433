@@ -1,17 +1,19 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
-    public class Alphabetizer : IFilter
+    public class SinkFilter : IFilter
     {
-        MemoryStream outputStream = new MemoryStream();
         MemoryStream inputStream = new MemoryStream();
         public bool IsComplete { get; private set; }
 
-        public Alphabetizer()
+        public List<string> Output = new List<string>();
+
+        public SinkFilter()
         {
             IsComplete = false;
         }
@@ -23,22 +25,18 @@ namespace KWICWeb.PipesAndFilters
 
         public void Connect(IFilter nextFilter)
         {
-            nextFilter.SetInput(outputStream);
+            throw new InvalidOperationException("SourceFilter does not take an ouput stream");
         }
 
         public void Filter()
         {
-
+            inputStream.Position = 0;
             using (StreamReader sr = new StreamReader(inputStream))
             {
-                inputStream.Position = 0;
                 while (!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
-                    StreamWriter sw = new StreamWriter(outputStream);
-                    // need to do some alphebetizer stuff here?
-                    sw.WriteLine(line + "!");
-                    sw.Flush();
+                    Output.Add(line);
                 }
             }
             IsComplete = true;

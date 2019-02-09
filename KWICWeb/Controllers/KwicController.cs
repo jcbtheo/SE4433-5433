@@ -15,15 +15,12 @@ namespace KWICWeb.Controllers
         {
             try
             {
-                Pipeline<string> pl = new Pipeline<string>();
-                pl.Add(new SourceFilter(inputData)).Add(new CircularShifter()).Add(new Alphabetizer());
+                Pipeline pl = new Pipeline();
+                SinkFilter sf = new SinkFilter();
+                pl.Add(new SourceFilter(inputData)).Add(new CircularShifter()).Add(new Alphabetizer()).Add(sf);
                 pl.Run();
 
-                //List<string> test = inputData.Split("\n").ToList();
-                //CircularShifter shifter = new CircularShifter();
-                //IEnumerable<string> test2 = shifter.Filter(test);
-                //string final = string.Join('\n', test2.ToArray());
-                return Ok(new { data = string.Join('\n', pl.output) });
+                return Ok(new {data = string.Join('\n', sf.Output)});
             }
             catch
             {

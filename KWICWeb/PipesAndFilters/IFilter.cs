@@ -1,12 +1,19 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
-    public interface IFilter<T>
+    public interface IFilter
     {
-        IEnumerable<T> Filter(IEnumerable<T> item);
+        bool IsComplete { get; }
+
+        void SetInput(MemoryStream inputStream);
+
+        void Connect(IFilter nextFilter);
+
+        void Filter();
+
     }
 }

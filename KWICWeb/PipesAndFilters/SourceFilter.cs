@@ -1,29 +1,44 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
-    public class SourceFilter : IFilter<string>
+    public class SourceFilter : IFilter
     {
+        MemoryStream outputStream = new MemoryStream();
         private string InputString {get; set;}
+        public bool IsComplete { get; private set; }
 
         public SourceFilter(string input)
         {
             InputString = input;
+            IsComplete = false;
         }
 
-        public IEnumerable<string> Filter(IEnumerable<string> input)
+        public void SetInput(MemoryStream stream)
+        {
+            throw new InvalidOperationException("SourceFilter does not take an input stream");
+        }
+
+        public void Connect(IFilter nextFilter)
+        {
+            nextFilter.SetInput(outputStream);
+        }
+
+        public void Filter()
         {
             string[] inputLines = InputString.Split("\n");
-            List<string> lines = new List<string>();
 
-            foreach(string line in inputLines)
+            StreamWriter sw = new StreamWriter(outputStream);
+            foreach (string line in inputLines)
             {
-                lines.Add(line);
+                sw.WriteLine(line);
             }
-            return inputLines;
+            sw.Flush();
+            IsComplete = true;
         }
     }
 }

@@ -5,24 +5,29 @@ using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
-    public class Pipeline<T>
+    public class Pipeline
     {
-        public IEnumerable<T> output { get; private set; }
-        List<IFilter<T>> filters = new List<IFilter<T>>();
+        //public IEnumerable<T> output { get; private set; }
+        List<IFilter> filters = new List<IFilter>();
 
-        public Pipeline<T> Add(IFilter<T> newFilter)
+        public Pipeline Add(IFilter newFilter)
         {
             filters.Add(newFilter);
+            if(filters.Count > 1)
+            {
+                filters[filters.Count - 2].Connect(filters[filters.Count - 1]);
+            }
             return this;
         }
 
         public void Run()
         {
-            output = new List<T>();
-
-            foreach(IFilter<T> filter in filters)
+            foreach(IFilter filter in filters)
             {
-                output = filter.Filter(output);
+                while(filter.IsComplete == false)
+                {
+                    filter.Filter();
+                }
             }
         }
     }
