@@ -10,7 +10,6 @@
             $.ajax({
                 url: '/api/Kwic',
                 type: 'POST',
-                //data: $('#inputBox').val(),
                 data: JSON.stringify(dataJSON),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -26,10 +25,10 @@
 </head>
 <body>
     <div>
-        <textarea id="inputBox" rows="10" cols="40"></textarea>
+        <textarea id="inputBox" rows="20" cols="70"></textarea>
     </div>
     <div>
-        <textarea id="outputBox" rows="10" cols="40"></textarea>
+        <textarea id="outputBox" rows="20" cols="70"></textarea>
     </div>
     <div>
         <button type="button" id="submit" onclick="SubmitText()">Submit</button>

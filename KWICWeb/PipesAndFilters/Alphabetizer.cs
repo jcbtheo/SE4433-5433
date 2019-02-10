@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace KWICWeb.PipesAndFilters
     {
         MemoryStream outputStream = new MemoryStream();
         MemoryStream inputStream = new MemoryStream();
+        List<string> sortedList;
+
         public bool IsComplete { get; private set; }
 
         public Alphabetizer()
@@ -28,20 +31,89 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
-
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 inputStream.Position = 0;
+                sortedList = new List<string>();
                 while (!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
+                    if (sortedList.Count == 0)
+                    {
+                        sortedList.Add(line);
+                    }
+                    else
+                    {
+                        int index = 0;
+                        while (index < sortedList.Count && !hasLowerCasePrecedence(line, sortedList[index]))
+                        {
+                            index++;
+                        }
+                        sortedList.Insert(index, line);
+                    }
+                }
+                foreach (string sortedLine in sortedList)
+                {
                     StreamWriter sw = new StreamWriter(outputStream);
-                    // need to do some alphebetizer stuff here?
-                    sw.WriteLine(line + "!");
+                    sw.WriteLine(sortedLine);
                     sw.Flush();
                 }
             }
             IsComplete = true;
+        }
+
+        private bool hasLowerCasePrecedence(string newString, string sortedString)
+        {
+            int newStringLength = newString.Length;
+            int sortedStringLength = sortedString.Length;
+
+            bool newIsShorter = newStringLength <= sortedStringLength;
+            string shorterString = newIsShorter ? newString : sortedString;
+            string longerString = newIsShorter ? sortedString : newString;
+
+            bool shorterStringLowercase = false;
+            bool longerStringLowercase = false;
+            bool shorterGoesFirst = false;
+
+            for (int i = 0; i < shorterString.Length; i++)
+            {
+                shorterStringLowercase = char.IsLower(shorterString[i]);
+                longerStringLowercase = char.IsLower(longerString[i]);
+
+                int letterCompare = char.ToUpperInvariant(shorterString[i]).CompareTo(char.ToUpperInvariant(longerString[i]));
+
+                if (letterCompare == 0)
+                {
+                    // Letters are the same but new string is lowercase it should be sorted before the existing string
+                    if (shorterStringLowercase && !longerStringLowercase)
+                    {
+                        shorterGoesFirst = true;
+                        break;
+                    }
+                    // new word letter is upper case and sorted word letter is lower case - new should be sorted after
+                    else if (!shorterStringLowercase && longerStringLowercase)
+                    {
+                        shorterGoesFirst = false;
+                        break;
+                    }
+                    // else letters are same with same case, need to continue checking the rest of the string
+                }
+                else
+                {
+                    shorterGoesFirst = letterCompare < 0;
+                    break;
+                }
+            }
+            // have hit all letters and they are equal. new is shorter or same length so place before
+            if (shorterGoesFirst && newIsShorter)
+            {
+                return true;
+            }
+            if (!shorterGoesFirst && !newIsShorter)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

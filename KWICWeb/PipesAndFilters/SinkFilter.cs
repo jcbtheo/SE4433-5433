@@ -11,7 +11,7 @@ namespace KWICWeb.PipesAndFilters
         MemoryStream inputStream = new MemoryStream();
         public bool IsComplete { get; private set; }
 
-        public List<string> Output = new List<string>();
+        public List<string> Output;
 
         public SinkFilter()
         {
@@ -31,6 +31,7 @@ namespace KWICWeb.PipesAndFilters
         public void Filter()
         {
             inputStream.Position = 0;
+            Output = new List<string>();
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 while (!sr.EndOfStream)

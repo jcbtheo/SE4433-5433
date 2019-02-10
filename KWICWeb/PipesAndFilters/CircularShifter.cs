@@ -29,7 +29,6 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
-
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 inputStream.Position = 0;
