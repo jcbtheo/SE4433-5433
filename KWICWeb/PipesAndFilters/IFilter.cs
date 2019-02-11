@@ -14,6 +14,5 @@ namespace KWICWeb.PipesAndFilters
         void Connect(IFilter nextFilter);
 
         void Filter();
-
     }
 }
