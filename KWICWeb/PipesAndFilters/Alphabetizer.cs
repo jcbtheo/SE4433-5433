@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KWICWeb.Comparers;
 
 namespace KWICWeb.PipesAndFilters
 {
@@ -35,6 +36,7 @@ namespace KWICWeb.PipesAndFilters
             {
                 inputStream.Position = 0;
                 sortedList = new List<string>();
+                LowercasePrecedence lcSorter = new LowercasePrecedence();
                 while (!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
@@ -44,12 +46,17 @@ namespace KWICWeb.PipesAndFilters
                     }
                     else
                     {
-                        int index = 0;
-                        while (index < sortedList.Count && !HasLowerCasePrecedence(line, sortedList[index]))
+                        int index = sortedList.BinarySearch(line, lcSorter);
+                        if (index < 0)
                         {
-                            index++;
+                            sortedList.Insert(~index, line);
                         }
-                        sortedList.Insert(index, line);
+                        //int index = 0;
+                        //while (index < sortedList.Count && !HasLowerCasePrecedence(line, sortedList[index]))
+                        //{
+                        //    index++;
+                        //}
+                        //sortedList.Insert(index, line);
                     }
                 }
                 foreach (string sortedLine in sortedList)
