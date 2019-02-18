@@ -8,7 +8,7 @@ namespace KWICWeb.PipesAndFilters
 {
     public class SinkFilter : IFilter
     {
-        private MemoryStream inputStream = new MemoryStream();
+        private MemoryStream inputStream;
 
         public bool IsComplete { get; private set; }
 
@@ -24,7 +24,7 @@ namespace KWICWeb.PipesAndFilters
             inputStream = stream;
         }
 
-        public void Connect(IFilter nextFilter)
+        public void SetOutput(MemoryStream stream)
         {
             throw new InvalidOperationException("SourceFilter does not take an ouput stream");
         }

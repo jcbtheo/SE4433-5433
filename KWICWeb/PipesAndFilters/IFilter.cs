@@ -11,7 +11,7 @@ namespace KWICWeb.PipesAndFilters
 
         void SetInput(MemoryStream inputStream);
 
-        void Connect(IFilter nextFilter);
+        void SetOutput(MemoryStream OutputStream);
 
         void Filter();
     }

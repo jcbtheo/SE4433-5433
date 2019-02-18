@@ -8,8 +8,8 @@ namespace KWICWeb.PipesAndFilters
 {
     public class CircularShifter : IFilter
     {
-        private MemoryStream outputStream = new MemoryStream();
-        private MemoryStream inputStream = new MemoryStream();
+        private MemoryStream outputStream;
+        private MemoryStream inputStream;
 
         public bool IsComplete { get; private set; }
 
@@ -23,9 +23,9 @@ namespace KWICWeb.PipesAndFilters
             inputStream = stream;
         }
 
-        public void Connect(IFilter nextFilter)
+        public void SetOutput(MemoryStream stream)
         {
-            nextFilter.SetInput(outputStream);
+            outputStream = stream;
         }
 
         public void Filter()

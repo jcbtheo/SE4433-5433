@@ -8,7 +8,7 @@ namespace KWICWeb.PipesAndFilters
 {
     public class SourceFilter : IFilter
     {
-        private MemoryStream outputStream = new MemoryStream();
+        private MemoryStream outputStream;
         private string InputString {get; set;}
 
         public bool IsComplete { get; private set; }
@@ -24,9 +24,9 @@ namespace KWICWeb.PipesAndFilters
             throw new InvalidOperationException("SourceFilter does not take an input stream");
         }
 
-        public void Connect(IFilter nextFilter)
+        public void SetOutput(MemoryStream stream)
         {
-            nextFilter.SetInput(outputStream);
+            outputStream = stream;
         }
 
         public void Filter()

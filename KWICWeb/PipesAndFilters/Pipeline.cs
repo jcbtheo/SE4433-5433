@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +14,9 @@ namespace KWICWeb.PipesAndFilters
             filters.Add(newFilter);
             if(filters.Count > 1)
             {
-                filters[filters.Count - 2].Connect(filters[filters.Count - 1]);
+                MemoryStream streamPipe = new MemoryStream();
+                filters[filters.Count - 2].SetOutput(streamPipe);
+                filters[filters.Count - 1].SetInput(streamPipe);
             }
             return this;
         }
