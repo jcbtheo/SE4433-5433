@@ -1,7 +1,5 @@
 ﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
@@ -12,8 +10,9 @@ namespace KWICWeb.PipesAndFilters
         public Pipeline Register(IFilter newFilter)
         {
             filters.Add(newFilter);
-            if(filters.Count > 1)
+            if (filters.Count > 1)
             {
+                // Set MemoryStream pipe between filters
                 MemoryStream streamPipe = new MemoryStream();
                 filters[filters.Count - 2].SetOutput(streamPipe);
                 filters[filters.Count - 1].SetInput(streamPipe);
@@ -23,12 +22,9 @@ namespace KWICWeb.PipesAndFilters
 
         public void Run()
         {
-            foreach(IFilter filter in filters)
+            foreach (IFilter filter in filters)
             {
-                while(filter.IsComplete == false)
-                {
-                    filter.Filter();
-                }
+                filter.Filter();
             }
         }
     }

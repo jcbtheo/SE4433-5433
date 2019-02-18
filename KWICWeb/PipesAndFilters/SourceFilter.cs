@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace KWICWeb.PipesAndFilters
 {
@@ -11,12 +8,9 @@ namespace KWICWeb.PipesAndFilters
         private MemoryStream outputStream;
         private string InputString {get; set;}
 
-        public bool IsComplete { get; private set; }
-
         public SourceFilter(string input)
         {
             InputString = input;
-            IsComplete = false;
         }
 
         public void SetInput(MemoryStream stream)
@@ -39,7 +33,6 @@ namespace KWICWeb.PipesAndFilters
                 sw.WriteLine(line);
             }
             sw.Flush();
-            IsComplete = true;
         }
     }
 }

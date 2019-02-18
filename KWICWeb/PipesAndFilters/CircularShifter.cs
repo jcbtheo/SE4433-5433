@@ -1,22 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace KWICWeb.PipesAndFilters
 {
     public class CircularShifter : IFilter
     {
         private MemoryStream outputStream;
         private MemoryStream inputStream;
-
-        public bool IsComplete { get; private set; }
-
-        public CircularShifter()
-        {
-            IsComplete = false;
-        }
 
         public void SetInput(MemoryStream stream)
         {
@@ -53,7 +43,6 @@ namespace KWICWeb.PipesAndFilters
                     }
                 }
             }
-            IsComplete = true;
         }
     }
 }

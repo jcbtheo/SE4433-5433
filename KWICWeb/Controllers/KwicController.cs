@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using KWICWeb.PipesAndFilters;
 
 namespace KWICWeb.Controllers
@@ -27,6 +23,5 @@ namespace KWICWeb.Controllers
                 return BadRequest("There was a problem analyzing your input. Please try again.");
             }
         }
-        // test change for commit 
     }
 }
