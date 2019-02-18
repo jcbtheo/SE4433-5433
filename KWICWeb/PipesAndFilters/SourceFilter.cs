@@ -8,8 +8,9 @@ namespace KWICWeb.PipesAndFilters
 {
     public class SourceFilter : IFilter
     {
-        MemoryStream outputStream = new MemoryStream();
+        private MemoryStream outputStream = new MemoryStream();
         private string InputString {get; set;}
+
         public bool IsComplete { get; private set; }
 
         public SourceFilter(string input)

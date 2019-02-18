@@ -8,9 +8,9 @@ namespace KWICWeb.PipesAndFilters
 {
     public class Alphabetizer : IFilter
     {
-        MemoryStream outputStream = new MemoryStream();
-        MemoryStream inputStream = new MemoryStream();
-        List<string> sortedList;
+        private MemoryStream outputStream = new MemoryStream();
+        private MemoryStream inputStream = new MemoryStream();
+        private List<string> sortedList;
 
         public bool IsComplete { get; private set; }
 
@@ -45,7 +45,7 @@ namespace KWICWeb.PipesAndFilters
                     else
                     {
                         int index = 0;
-                        while (index < sortedList.Count && !hasLowerCasePrecedence(line, sortedList[index]))
+                        while (index < sortedList.Count && !HasLowerCasePrecedence(line, sortedList[index]))
                         {
                             index++;
                         }
@@ -62,7 +62,7 @@ namespace KWICWeb.PipesAndFilters
             IsComplete = true;
         }
 
-        private bool hasLowerCasePrecedence(string newString, string sortedString)
+        private bool HasLowerCasePrecedence(string newString, string sortedString)
         {
             int newStringLength = newString.Length;
             int sortedStringLength = sortedString.Length;
@@ -73,7 +73,7 @@ namespace KWICWeb.PipesAndFilters
 
             bool shorterStringLowercase = false;
             bool longerStringLowercase = false;
-            bool shorterGoesFirst = false;
+            bool shorterGoesFirst = true;
 
             for (int i = 0; i < shorterString.Length; i++)
             {

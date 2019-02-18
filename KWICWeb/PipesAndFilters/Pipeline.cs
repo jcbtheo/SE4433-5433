@@ -7,10 +7,9 @@ namespace KWICWeb.PipesAndFilters
 {
     public class Pipeline
     {
-        //public IEnumerable<T> output { get; private set; }
-        List<IFilter> filters = new List<IFilter>();
+        private List<IFilter> filters = new List<IFilter>();
 
-        public Pipeline Add(IFilter newFilter)
+        public Pipeline Register(IFilter newFilter)
         {
             filters.Add(newFilter);
             if(filters.Count > 1)

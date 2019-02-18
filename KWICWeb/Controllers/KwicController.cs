@@ -16,11 +16,11 @@ namespace KWICWeb.Controllers
             try
             {
                 Pipeline pl = new Pipeline();
-                SinkFilter sf = new SinkFilter();
-                pl.Add(new SourceFilter(inputData)).Add(new CircularShifter()).Add(new Alphabetizer()).Add(sf);
+                SinkFilter sink = new SinkFilter();
+                pl.Register(new SourceFilter(inputData)).Register(new CircularShifter()).Register(new Alphabetizer()).Register(sink);
                 pl.Run();
 
-                return Ok(new {data = string.Join('\n', sf.Output)});
+                return Ok(new {data = string.Join('\n', sink.output)});
             }
             catch
             {

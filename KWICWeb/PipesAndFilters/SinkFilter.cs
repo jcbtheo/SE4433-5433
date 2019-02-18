@@ -8,10 +8,11 @@ namespace KWICWeb.PipesAndFilters
 {
     public class SinkFilter : IFilter
     {
-        MemoryStream inputStream = new MemoryStream();
+        private MemoryStream inputStream = new MemoryStream();
+
         public bool IsComplete { get; private set; }
 
-        public List<string> Output;
+        public List<string> output;
 
         public SinkFilter()
         {
@@ -31,13 +32,13 @@ namespace KWICWeb.PipesAndFilters
         public void Filter()
         {
             inputStream.Position = 0;
-            Output = new List<string>();
+            output = new List<string>();
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 while (!sr.EndOfStream)
                 {
                     string line = sr.ReadLine();
-                    Output.Add(line);
+                    output.Add(line);
                 }
             }
             IsComplete = true;
