@@ -25,8 +25,10 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
+            // Take in the entire json string from webcall and split into individual lines. 
             string[] inputLines = InputString.Split("\n");
 
+            // Write each line to output. 
             StreamWriter sw = new StreamWriter(outputStream);
             foreach (string line in inputLines)
             {

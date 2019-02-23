@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace KWICWeb.Comparers
 {
@@ -46,7 +43,7 @@ namespace KWICWeb.Comparers
                     break;
                 }
             }
-            // have hit all letters and they are equal. new is shorter or same length so place before
+            // Have hit all letters and they are equal. X is shorter or same length so place before, otherwise it goes after. 
             if (shorterGoesFirst && xIsShorter)
             {
                 return -1;

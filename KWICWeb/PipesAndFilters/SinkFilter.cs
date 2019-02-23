@@ -21,6 +21,7 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
+            // Simply reads in every line from the input pipe and collects them in the output list.
             inputStream.Position = 0;
             output = new List<string>();
             using (StreamReader sr = new StreamReader(inputStream))

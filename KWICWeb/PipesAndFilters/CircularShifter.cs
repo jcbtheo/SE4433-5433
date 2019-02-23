@@ -20,6 +20,7 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
+            // Read in one line at a time, write the original line to the output, then write each subsequent circular shift for that line. 
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 inputStream.Position = 0;

@@ -11,6 +11,8 @@ namespace KWICWeb.Controllers
         {
             try
             {
+                // Create the pipeline and add filters to it. The SinkFilter must be defined as a variable because we need to be able to pull
+                // the accumulated data from it for the webcall return. 
                 Pipeline pl = new Pipeline();
                 SinkFilter sink = new SinkFilter();
                 pl.Register(new SourceFilter(inputData)).Register(new CircularShifter()).Register(new Alphabetizer()).Register(sink);

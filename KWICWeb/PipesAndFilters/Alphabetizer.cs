@@ -22,6 +22,7 @@ namespace KWICWeb.PipesAndFilters
 
         public void Filter()
         {
+            // Read each item from the stream and add it to the sorted list one line at a time. 
             using (StreamReader sr = new StreamReader(inputStream))
             {
                 inputStream.Position = 0;
@@ -45,6 +46,7 @@ namespace KWICWeb.PipesAndFilters
                         }
                     }
                 }
+                // Write the entire sorted list back out. 
                 foreach (string sortedLine in sortedList)
                 {
                     StreamWriter sw = new StreamWriter(outputStream);
