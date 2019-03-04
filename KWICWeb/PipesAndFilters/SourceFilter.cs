@@ -32,7 +32,7 @@ namespace KWICWeb.PipesAndFilters
             StreamWriter sw = new StreamWriter(outputStream);
             foreach (string line in inputLines)
             {
-                sw.WriteLine(line);
+                sw.WriteLine(line.Trim());
             }
             sw.Flush();
         }
