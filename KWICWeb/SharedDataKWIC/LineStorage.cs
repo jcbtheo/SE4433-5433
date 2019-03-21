@@ -7,43 +7,43 @@ namespace KWICWeb.SharedDataKWIC
 {
     public class LineStorage
     {
-        // implement a storage mechanism for the all the char sets
-        // can easily do a 2d array I think
-        private List<List<string>> words = new List<List<string>>();
 
-        public void SetWord(int lineIndex, int wordIndex, string word)
+        private List<string> words = new List<string>();
+        private List<int> newLineIndexes = new List<int>();
+        private List<int> lineWordCount = new List<int>();
+        private int lastLineIndex = -1;
+
+        public void SetWord(int lineIndex, string word)
         {
-            // I hate this because the lineIndex can be set at anything??
-            if (words.ElementAtOrDefault(lineIndex) == null)
+            // is new line
+            if (lineIndex != lastLineIndex)
             {
-                words.Add(new List<string>());
-                words.Last().Insert(wordIndex, word);
+                newLineIndexes.Add(words.Count);
+                lineWordCount.Add(1);
+                lastLineIndex = lineIndex;
             }
             else
             {
-                words[lineIndex].Insert(wordIndex, word);
+                lineWordCount[lineIndex]++;
             }
+            words.Add(word);
         }
 
         public string GetWord(int lineIndex, int wordIndex)
         {
-            if (words.ElementAtOrDefault(lineIndex) != null)
-            {
-                if (words[lineIndex].ElementAtOrDefault(wordIndex) != null)
-                {
-                    return words[lineIndex][wordIndex];
-                }
-            }
-            return null;
+            return words[newLineIndexes[lineIndex] + wordIndex];
         }
 
-        public int Word(int line)
+        public int WordCountForLine(int line)
         {
-            if (words.ElementAtOrDefault(line) != null)
+            try
             {
-                return words[line].Count;
+                return lineWordCount[line];
             }
-            return 0;
+            catch
+            {
+                return -1;
+            }
         }
     }
 }

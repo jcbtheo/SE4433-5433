@@ -9,32 +9,35 @@ namespace KWICWeb.SharedDataKWIC
     {
         public int line;
         public int offset;
+
+        public IndexOffsets(int l, int o)
+        {
+            line = l;
+            offset = o;
+        }
     }
 
     public class CircularShifter
     {
         private LineStorage storage;
-        private Dictionary<int, Tuple<int, int>> shiftIndices = new Dictionary<int, Tuple<int, int>>();
+        private List<IndexOffsets> offsets = new List<IndexOffsets>();
 
         public CircularShifter(LineStorage lineStorage)
         {
-            // ??? needs to be set up with a line storage object after input is complete? does the shift, 42:38 in vid. Each "filter" will need this type of function
             storage = lineStorage;
 
-            int lineIndex = 0;
-            int shiftIndex = 0;
-            int wordCount = storage.Word(lineIndex);
-            while (wordCount != 0)
+            int line = 0;
+            int wordCount = lineStorage.WordCountForLine(line);
+            while (wordCount != -1)
             {
-                // shift and store shift
-                for (int i = 0; i < wordCount; i++)
+                for (int wordIndex = 0; wordIndex < wordCount; wordIndex++)
                 {
-                    shiftIndices.Add(shiftIndex, new Tuple<int, int>(lineIndex, i));
-                    shiftIndex++;
+                    offsets.Add(new IndexOffsets(line, wordIndex));
                 }
-                lineIndex++;
-                wordCount = storage.Word(lineIndex);
+                line++;
+                wordCount = lineStorage.WordCountForLine(line);
             }
+           
         }
 
         // shift count is for a given line only
@@ -45,22 +48,23 @@ namespace KWICWeb.SharedDataKWIC
 
         public string CsGetWord(int shiftIndex, int wordIndex)
         {
-            // makes a call to linestorage - all 'get' calls will be chained back this way so that only line storage has lines, everything else just has indexes
-            int lsLineIndex = shiftIndices[shiftIndex].Item1;
-            int offset = shiftIndices[shiftIndex].Item2;
-            int lsWordCount = storage.Word(lsLineIndex);
-            int actualPos = offset + wordIndex >= lsWordCount ? offset + wordIndex - lsWordCount : offset + wordIndex;
-            string word = storage.GetWord(lsLineIndex, actualPos);
-            return word;
+            int wordsInLine = CsWord(shiftIndex);
+            int actualLine = offsets[shiftIndex].line;
+            int offset = offsets[shiftIndex].offset;
+            int actualPos = offset + wordIndex >= wordsInLine ? offset + wordIndex - wordsInLine : offset + wordIndex;
+            return storage.GetWord(actualLine, actualPos);
         }
 
         public int CsWord(int line)
         {
-            if (shiftIndices.TryGetValue(line, out Tuple<int, int> value))
+            try
             {
-                return storage.Word(shiftIndices[line].Item1);
+                return storage.WordCountForLine(offsets[line].line);
             }
-            return 0;
+            catch
+            {
+                return -1;
+            }
         }
     }
 }

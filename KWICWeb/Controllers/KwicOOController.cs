@@ -22,11 +22,11 @@ namespace KWICWeb.Controllers
                 CircularShifter cs = new CircularShifter(store);
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
-                Output output = new Output(al);
+                //Output output = new Output(al);
 
                 sw.Stop();
                 string timeElapsed = sw.Elapsed.ToString();
-                return Ok(new { data = output.GetOuputAsString(), time = timeElapsed });
+                return Ok(new { data = string.Join('\n', al.sortedList), time = timeElapsed });
             }
             catch
             {

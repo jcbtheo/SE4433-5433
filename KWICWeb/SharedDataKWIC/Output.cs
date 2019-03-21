@@ -19,9 +19,9 @@ namespace KWICWeb.SharedDataKWIC
             List<string> tempList = new List<string>();
 
             int alphIndex = 0;
-            while (alphShifter.IndexOfShift(alphIndex) != -1)
+            while (!string.IsNullOrEmpty(alphShifter.IndexOfShift(alphIndex)))
             {
-                tempList.Add(alphShifter.GetString(alphShifter.IndexOfShift(alphIndex)));
+                tempList.Add(alphShifter.IndexOfShift(alphIndex));
                 alphIndex++;
             }
 
