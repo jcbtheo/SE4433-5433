@@ -9,7 +9,7 @@ namespace KWICWeb.SharedDataKWIC
     public class AlphabeticShifter
     {
         private CircularShifter shifter;
-        //private List<int> sortedCsIndices = new List<int>();
+        private List<int> sortedCsIndices = new List<int>();
 
         public List<string> sortedList = new List<string>();
 
@@ -21,30 +21,30 @@ namespace KWICWeb.SharedDataKWIC
         public string GetString(int shiftIndex)
         {
             // create the string
-            StringBuilder sb = new StringBuilder();
-            int wordCount = shifter.CsWord(shiftIndex);
+            string sb = "";
+            int wordCount = shifter.CsWordCountForLine(shiftIndex);
             for (int i = 0; i < wordCount; i++)
             {
-                sb.Append(shifter.CsGetWord(shiftIndex, i));
-                sb.Append(" ");
+                sb += shifter.CsGetWord(shiftIndex, i);
+                if (i != wordCount - 1)
+                {
+                    sb += " ";
+                }
             }
-
-            return sb.ToString();
+            return sb;
         }
 
         public void Alph()
         {
             LowercasePrecedence lcSorter = new LowercasePrecedence();
-            
             int shiftIndex = 0;
-
-            while (shifter.CsWord(shiftIndex) != -1)
+            while (shifter.CsWordCountForLine(shiftIndex) != -1)
             {
                 string shiftedString = GetString(shiftIndex);
+
                 if (sortedList.Count == 0)
                 {
                     sortedList.Add(shiftedString);
-                    //sortedCsIndices.Add(shiftIndex);
                 }
                 else
                 {

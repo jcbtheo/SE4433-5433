@@ -9,41 +9,43 @@ namespace KWICWeb.SharedDataKWIC
     {
 
         private List<string> words = new List<string>();
-        private List<int> newLineIndexes = new List<int>();
-        private List<int> lineWordCount = new List<int>();
-        private int lastLineIndex = -1;
+        private List<int> lineIndexes = new List<int>();
+        int lastLineIndex = -1;
 
         public void SetWord(int lineIndex, string word)
         {
-            // is new line
             if (lineIndex != lastLineIndex)
             {
-                newLineIndexes.Add(words.Count);
-                lineWordCount.Add(1);
+                lineIndexes.Add(words.Count);
                 lastLineIndex = lineIndex;
-            }
-            else
-            {
-                lineWordCount[lineIndex]++;
             }
             words.Add(word);
         }
 
         public string GetWord(int lineIndex, int wordIndex)
         {
-            return words[newLineIndexes[lineIndex] + wordIndex];
+            return words[lineIndexes[lineIndex] + wordIndex];
         }
 
         public int WordCountForLine(int line)
         {
-            try
-            {
-                return lineWordCount[line];
-            }
-            catch
+            if (line > lineIndexes.Count -1 || line < 0)
             {
                 return -1;
             }
+            if (line == lineIndexes.Count - 1)
+            {
+                return words.Count - lineIndexes[line];
+            }
+            else
+            {
+                return lineIndexes[line + 1] - lineIndexes[line];
+            }
+        }
+
+        public int GetNumberOfLines()
+        {
+            return lineIndexes.Count();
         }
     }
 }
