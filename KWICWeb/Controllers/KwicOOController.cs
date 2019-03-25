@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using KWICWeb.SharedDataKWIC;
 using System.Diagnostics;
+using System;
 
 namespace KWICWeb.Controllers
 {
@@ -12,6 +13,14 @@ namespace KWICWeb.Controllers
         {
             try
             {
+                //FullShareData f = new FullShareData();
+                //f.Input(inputData);
+                //f.CircularShift();
+                //f.Alpabetize();
+                //f.Output();
+
+                //string test = string.Join('\n', f.output);
+
                 // time the action for comparison against pipes and filters
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -22,15 +31,16 @@ namespace KWICWeb.Controllers
                 CircularShifter cs = new CircularShifter(store);
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
-                //Output output = new Output(al);
+                Output output = new Output(al);
 
                 sw.Stop();
                 string timeElapsed = sw.Elapsed.ToString();
-                return Ok(new { data = string.Join('\n', al.sortedList), time = timeElapsed });
+                return Ok(new { data = output.GetOuputAsString(), time = timeElapsed });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("There was a problem analyzing your input. Please try again.");
+                return Ok(new { data = ex.Message + ex.StackTrace });
+                //return BadRequest("There was a problem analyzing your input. Please try again.");
             }
         }
     }
