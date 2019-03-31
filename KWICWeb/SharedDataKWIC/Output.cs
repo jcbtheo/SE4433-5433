@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace KWICWeb.SharedDataKWIC
 {
     public class Output
     {
-        private AlphabeticShifter alphShifter;
-
-        public Output(AlphabeticShifter shifter)
-        {
-            alphShifter = shifter;
-        }
-
-        public string GetOuputAsString()
+        public string GetOuputAsString(AlphabeticShifter alphShifter)
         {
             List<string> tempList = new List<string>();
 

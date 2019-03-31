@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using System.Collections.Generic;
 using KWICWeb.Comparers;
 
 namespace KWICWeb.SharedDataKWIC
@@ -19,17 +16,17 @@ namespace KWICWeb.SharedDataKWIC
         public string GetString(int shiftIndex)
         {
             // create the string
-            string sb = "";
+            string shiftedLine = "";
             int wordCount = shifter.CsWordCountForLine(shiftIndex);
             for (int i = 0; i < wordCount; i++)
             {
-                sb += shifter.CsGetWord(shiftIndex, i);
+                shiftedLine += shifter.CsGetWord(shiftIndex, i);
                 if (i != wordCount - 1)
                 {
-                    sb += " ";
+                    shiftedLine += " ";
                 }
             }
-            return sb;
+            return shiftedLine;
         }
 
         public void Alph()

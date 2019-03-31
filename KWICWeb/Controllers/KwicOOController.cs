@@ -13,14 +13,6 @@ namespace KWICWeb.Controllers
         {
             try
             {
-                //FullShareData f = new FullShareData();
-                //f.Input(inputData);
-                //f.CircularShift();
-                //f.Alpabetize();
-                //f.Output();
-
-                //string test = string.Join('\n', f.output);
-
                 // time the action for comparison against pipes and filters
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -29,13 +21,14 @@ namespace KWICWeb.Controllers
                 LineStorage store = new LineStorage();
                 input.Store(store, inputData);
                 CircularShifter cs = new CircularShifter(store);
+                cs.SetFilterWords(@"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\NoiseWords.txt");
+                cs.Shift();
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
-                Output output = new Output(al);
 
                 sw.Stop();
                 string timeElapsed = sw.Elapsed.ToString();
-                return Ok(new { data = output.GetOuputAsString(), time = timeElapsed });
+                return Ok(new { data = new Output().GetOuputAsString(al), time = timeElapsed });
             }
             catch (Exception ex)
             {
