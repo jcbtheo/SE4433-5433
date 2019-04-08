@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using KWICWeb.SharedDataKWIC;
-using System.Diagnostics;
 using System;
+using DataStore;
 
 namespace KWICWeb.Controllers
 {
@@ -13,10 +13,6 @@ namespace KWICWeb.Controllers
         {
             try
             {
-                // time the action for comparison against pipes and filters
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-
                 Input input = new Input();
                 LineStorage store = new LineStorage();
                 input.Store(store, inputData);
@@ -25,10 +21,8 @@ namespace KWICWeb.Controllers
                 cs.Shift();
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
-
-                sw.Stop();
-                string timeElapsed = sw.Elapsed.ToString();
-                return Ok(new { data = new Output().GetOuputAsString(al), time = timeElapsed });
+                DataLayer.StoreLines(new Output().GetOuputAsString(al));
+                return Ok(new { data = new Output().GetOuputAsString(al)});
             }
             catch (Exception ex)
             {

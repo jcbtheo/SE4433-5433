@@ -5,7 +5,7 @@ namespace KWICWeb.SharedDataKWIC
 {
     public class Output
     {
-        public string GetOuputAsString(AlphabeticShifter alphShifter)
+        public List<string> GetOuputAsString(AlphabeticShifter alphShifter)
         {
             List<string> tempList = new List<string>();
 
@@ -16,7 +16,8 @@ namespace KWICWeb.SharedDataKWIC
                 alphIndex++;
             }
 
-            return string.Join('\n', tempList);
+            // here we would store the output into the 'db'
+            return tempList; //string.Join('\n', tempList);
         }
 
 

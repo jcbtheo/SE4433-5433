@@ -6,6 +6,7 @@ namespace KWICWeb.SharedDataKWIC
     {
         private List<string> words = new List<string>();
         private List<int> lineIndices = new List<int>();
+        private List<string> urls = new List<string>();
         int lastLineIndex = -1;
 
         public void SetWord(int lineIndex, string word)
@@ -18,9 +19,19 @@ namespace KWICWeb.SharedDataKWIC
             words.Add(word);
         }
 
+        public void SetUrl(string url)
+        {
+            urls.Add(url);
+        }
+
         public string GetWord(int lineIndex, int wordIndex)
         {
             return words[lineIndices[lineIndex] + wordIndex];
+        }
+
+        public string GetUrl(int lineIndex)
+        {
+            return urls[lineIndex];
         }
 
         public int WordCountForLine(int line)

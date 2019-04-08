@@ -40,20 +40,40 @@
                 }
             })
         }
+
+        function Search() {
+            dataJSON = $('#searchBox').val();
+            $.ajax({
+                url: '/api/Search',
+                type: 'POST',
+                data: JSON.stringify(dataJSON),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    $('#outputBox').val(response.data);
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            })
+        }
     </script>
 </head>
 <body>
     <div>
-        <span id="pfTime">Last Pipes and Filters Time:</span>
+        <!--<span id="pfTime">Last Pipes and Filters Time:</span>
         <br />
         <span id="ooTime">Last Object Oriented Time:</span>
         <br />
         <br />
-        Input:
+        Input:-->
+    </div>
+    <div>
+        <input type="text" id="searchBox" />
+        <button type="button" id="searchBar" onclick="Search()">Search</button>
     </div>
     <div>
         <textarea id="inputBox" rows="20" cols="70"></textarea>
-        
     </div>
     <div>
         Output:
@@ -62,8 +82,8 @@
         <textarea id="outputBox" rows="20" cols="70"></textarea>
     </div>
     <div>
-        <button type="button" id="submit" onclick="SubmitTextPF()">PipeFilter</button>
-        <button type="button" id="submit" onclick="SubmitTextOO()">OO-SharedData</button>
+        <button type="button" id="submitPF" onclick="SubmitTextPF()">PipeFilter</button>
+        <button type="button" id="submitOO" onclick="SubmitTextOO()">OO-SharedData</button>
     </div>
 </body>
 </html>

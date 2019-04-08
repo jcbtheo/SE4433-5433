@@ -50,6 +50,11 @@ namespace KWICWeb.SharedDataKWIC
             return storage.GetWord(offsets[shiftIndex].Item1, actualPos);
         }
 
+        public string CsGetUrl(int shiftIndex)
+        {
+            return storage.GetUrl(offsets[shiftIndex].Item1);
+        }
+
         public int CsWordCountForLine(int line)
         {
             try

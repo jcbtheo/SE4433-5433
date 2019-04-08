@@ -20,12 +20,13 @@ namespace KWICWeb.SharedDataKWIC
             int wordCount = shifter.CsWordCountForLine(shiftIndex);
             for (int i = 0; i < wordCount; i++)
             {
-                shiftedLine += shifter.CsGetWord(shiftIndex, i);
-                if (i != wordCount - 1)
-                {
-                    shiftedLine += " ";
-                }
+                shiftedLine += shifter.CsGetWord(shiftIndex, i) + " ";
+                //if (i != wordCount - 1)
+                //{
+                //    shiftedLine += " ";
+                //}
             }
+            shiftedLine += shifter.CsGetUrl(shiftIndex);
             return shiftedLine;
         }
 
