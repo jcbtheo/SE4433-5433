@@ -5,24 +5,20 @@ namespace DataStore
 {
     public static class DataLayer
     {
-        // need to set path, likely in constructor 
-        private static string basePath = @"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\test.txt";
+        private static string basePath = @"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\";
 
-        public static void StoreLines(List<string> lines)
+        public static void StoreLines(string filename, string lines)
         {
-            using (StreamWriter dataBaseFile = new StreamWriter(basePath, false))
+            using (StreamWriter dataBaseFile = new StreamWriter(basePath + filename, false))
             {
-                foreach (string line in lines)
-                {
-                    dataBaseFile.WriteLine(line);
-                }
+                dataBaseFile.WriteLine(lines);
             }
         }
 
-        public static List<string> RetrieveLines()
+        public static List<string> RetrieveLines(string filename)
         {
             List<string> lines = new List<string>();
-            foreach (string line in File.ReadLines(basePath))
+            foreach (string line in File.ReadLines(basePath + filename))
             {
                 lines.Add(line);
             }

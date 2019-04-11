@@ -13,6 +13,7 @@ namespace KWICWeb.Controllers
         {
             try
             {
+                DataLayer.StoreLines("input.txt", inputData);
                 Input input = new Input();
                 LineStorage store = new LineStorage();
                 input.Store(store, inputData);
@@ -21,8 +22,9 @@ namespace KWICWeb.Controllers
                 cs.Shift();
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
-                DataLayer.StoreLines(new Output().GetOuputAsString(al));
-                return Ok(new { data = new Output().GetOuputAsString(al)});
+                string output = new Output().GetOuputAsString(al);
+                DataLayer.StoreLines("output.txt", output);
+                return Ok(new { data = output});
             }
             catch (Exception ex)
             {

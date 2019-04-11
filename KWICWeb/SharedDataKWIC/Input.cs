@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KWICWeb.SharedDataKWIC
 {
@@ -6,19 +8,21 @@ namespace KWICWeb.SharedDataKWIC
     {
         public void Store(LineStorage storage, string input)
         {
-            var regex = new Regex(@"https?:\/\/[a-zA-Z0-9]+\.(?:edu|com|org|net)", RegexOptions.Compiled);
-            string[] lines = input.Split('\n');
+            var regex = new Regex(@"https?:\/\/(?:www\.)[a-zA-Z0-9]+\.(?:edu|com|org|net)", RegexOptions.Compiled);
+            List<string> lines = new List<string>(input.Split('\n'));
             int lineIndex = 0;
 
             foreach (string line in lines)
             {
-                string[] words = line.Trim().Split(' ');
+                bool hasRegexMatch = false;
+                string[] words = Regex.Split(line.Trim(), @"\s+");
 
                 foreach (string word in words)
                 {
                     // check for URL regex
                     if (regex.IsMatch(word))
                     {
+                        hasRegexMatch = true;
                         storage.SetUrl(word);
                     }
                     else
@@ -26,7 +30,10 @@ namespace KWICWeb.SharedDataKWIC
                         storage.SetWord(lineIndex, word);
                     }
                 }
-
+                if (!hasRegexMatch)
+                {
+                    storage.SetUrl("");
+                }
                 lineIndex++;
             }
         }

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-
 namespace KWICWeb.SharedDataKWIC
 {
     public class Output
     {
-        public List<string> GetOuputAsString(AlphabeticShifter alphShifter)
+        public string GetOuputAsString(AlphabeticShifter alphShifter)
         {
             List<string> tempList = new List<string>();
 
@@ -16,10 +15,8 @@ namespace KWICWeb.SharedDataKWIC
                 alphIndex++;
             }
 
-            // here we would store the output into the 'db'
-            return tempList; //string.Join('\n', tempList);
+            return string.Join('\n', tempList);
         }
-
 
     }
 }
