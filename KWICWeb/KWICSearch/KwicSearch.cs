@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Text.RegularExpressions;
 using DataStore;
 
@@ -11,55 +12,63 @@ namespace KWICWeb.KWICSearch
         {
             List<string> shiftedLines = DataLayer.RetrieveLines("output.txt");
             List<string> originalLines = DataLayer.RetrieveLines("input.txt");
+            List<string> shiftedOriginalIndices = DataLayer.RetrieveLines("shiftedOriginalLines.txt");
             List<string> searchTerms = searchInput.Trim().Split(" ").ToList();
             List<string> firstWordsFromShifts = shiftedLines.Select(x => x.Split(" ")[0].ToLower()).ToList();
-            List<int> firstWordMatchIndices = new List<int>();
-            List<string> originalLineMatches = new List<string>();
+            List<string> matchedOriginalLines = new List<string>();
+            List<int> originalIndexMatches = new List<int>();
 
-            if (searchTerms.Count > 0)
+            foreach (string term in searchTerms)
             {
-                string lower = searchTerms[0].ToLower();
-                // find the first binary search index of the first search term. 
-                int firstMatchIndex = firstWordsFromShifts.BinarySearch(lower);
-                // if it is found, check the lines before and after for matches on that term. If there are no matches on a the first term then there can be no matches at all. 
-                if (firstMatchIndex >= 0)
+                List<int> firstWordMatchIndices = BinarySearchIndices(term.ToLower(), firstWordsFromShifts);
+                if (originalIndexMatches.Count == 0)
                 {
-                    //int tempIndex = firstMatchIndex;
-                    CheckFollowingIndexes(firstMatchIndex, lower, firstWordsFromShifts, firstWordMatchIndices);
-                    CheckPreviousIndexes(--firstMatchIndex, lower, firstWordsFromShifts, firstWordMatchIndices);
-                    originalLineMatches = GetOriginalLines(firstWordMatchIndices, shiftedLines, originalLines);
-
-                    // remove all original line matches that do not contain the subsequent search terms.
-                    foreach (string term in searchTerms)
+                    foreach (int index in firstWordMatchIndices)
                     {
-                        originalLineMatches = originalLineMatches.Where(x => x.ToLower().Contains(term.ToLower())).ToList();
+                        originalIndexMatches.Add(Int32.Parse(shiftedOriginalIndices[index]));
                     }
                 }
-            }
-            return originalLineMatches;
-        }
-
-        private List<string> GetOriginalLines(List<int> firstWordIndices, List<string> shiftedLines, List<string> originalLines)
-        {
-            var regex = new Regex(@"https?:\/\/(?:www\.)[a-zA-Z0-9]+\.(?:edu|com|org|net)", RegexOptions.Compiled);
-            Dictionary<string, int> usedUrls = new Dictionary<string, int>();
-            List<string> outputMatches = new List<string>();
-
-            foreach (int index in firstWordIndices)
-            {
-                string url = regex.Match(shiftedLines[index]).ToString();
-                // if the url hasn't already been used get it's original line
-                if (usedUrls.TryAdd(url, 1))
+                else
                 {
-                    outputMatches.AddRange(originalLines.Where(x => x.Contains(url)).ToList());
+                    List<int> tempLineMatches = new List<int>();
+                    foreach (int index in firstWordMatchIndices)
+                    {
+                        tempLineMatches.Add(Int32.Parse(shiftedOriginalIndices[index]));
+                    }
+                    // remove non-duplicate indices
+                    originalIndexMatches = originalIndexMatches.Intersect(tempLineMatches).ToList();
                 }
-            }
 
-            return outputMatches;
+            }
+            originalIndexMatches = originalIndexMatches.Distinct().ToList();
+            foreach (int matchIndex in originalIndexMatches)
+            {
+                matchedOriginalLines.Add(originalLines[matchIndex]);
+            }
+            return matchedOriginalLines;
         }
 
-        private void CheckPreviousIndexes(int index, string term, List<string> searchList, List<int> existingIndices)
+        private List<int> BinarySearchIndices(string term, List<string> wordsToMatch)
         {
+            string lower = term;
+            // find the first binary search index of the first search term. 
+            int firstMatchIndex = wordsToMatch.BinarySearch(lower);
+            // if it is found, check the lines before and after for matches on that term. If there are no matches on a the first term then there can be no matches at all. 
+            List<int> firstMatchIndices = new List<int>();
+
+            if (firstMatchIndex >= 0)
+            {
+                //int tempIndex = firstMatchIndex;
+                firstMatchIndices.AddRange(CheckFollowingIndexes(firstMatchIndex, lower, wordsToMatch));
+                firstMatchIndices.AddRange(CheckPreviousIndexes(--firstMatchIndex, lower, wordsToMatch));
+            }
+            return firstMatchIndices;
+        }
+
+        private List<int> CheckPreviousIndexes(int index, string term, List<string> searchList)
+        {
+            List<int> existingIndices = new List<int>();
+
             while (index > 0)
             {
                 if (searchList[index] == term.ToLower())
@@ -72,10 +81,12 @@ namespace KWICWeb.KWICSearch
                 }
                 index--;
             }
+            return existingIndices;
         }
 
-        private void CheckFollowingIndexes(int index, string term, List<string> searchList, List<int> existingIndices)
+        private List<int> CheckFollowingIndexes(int index, string term, List<string> searchList)
         {
+            List<int> existingIndices = new List<int>();
             while (index < searchList.Count)
             {
                 if (searchList[index] == term.ToLower())
@@ -88,6 +99,7 @@ namespace KWICWeb.KWICSearch
                 }
                 index++;
             }
+            return existingIndices;
         }
     }
 }

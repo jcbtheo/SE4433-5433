@@ -42,6 +42,11 @@ namespace KWICWeb.SharedDataKWIC
             }
         }
 
+        public int GetOriginalLineNumber(int shiftIndex)
+        {
+            return offsets[shiftIndex].Item1;
+        }
+
         public string CsGetWord(int shiftIndex, int wordIndex)
         {
             int wordsInLine = CsWordCountForLine(shiftIndex);

@@ -60,6 +60,11 @@ namespace KWICWeb.SharedDataKWIC
             }
         }
 
+        public int GetOriginalLineNumber(int alphIndex)
+        {
+            return shifter.GetOriginalLineNumber(alphIndex);
+        }
+
         public int IndexOfShift(int alphIndex)
         {
             // Returns the index of the circular 
