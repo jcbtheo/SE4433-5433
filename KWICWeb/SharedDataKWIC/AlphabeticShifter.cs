@@ -60,9 +60,9 @@ namespace KWICWeb.SharedDataKWIC
             }
         }
 
-        public int GetOriginalLineNumber(int alphIndex)
+        public int GetOriginalLineIndex(int alphIndex)
         {
-            return shifter.GetOriginalLineNumber(alphIndex);
+            return shifter.GetOriginalLineIndex(alphIndex);
         }
 
         public int IndexOfShift(int alphIndex)

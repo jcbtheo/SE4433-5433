@@ -38,7 +38,6 @@ namespace KWICWeb.KWICSearch
                     // remove non-duplicate indices
                     originalIndexMatches = originalIndexMatches.Intersect(tempLineMatches).ToList();
                 }
-
             }
             originalIndexMatches = originalIndexMatches.Distinct().ToList();
             foreach (int matchIndex in originalIndexMatches)

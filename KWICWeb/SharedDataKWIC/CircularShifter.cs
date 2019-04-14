@@ -42,7 +42,7 @@ namespace KWICWeb.SharedDataKWIC
             }
         }
 
-        public int GetOriginalLineNumber(int shiftIndex)
+        public int GetOriginalLineIndex(int shiftIndex)
         {
             return offsets[shiftIndex].Item1;
         }

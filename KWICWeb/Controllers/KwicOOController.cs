@@ -23,7 +23,7 @@ namespace KWICWeb.Controllers
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();
                 string output = new Output().GetOuputAsString(al);
-                string originalLineIndexes = new Output().GetKwicShiftedOriginalLineNumbers(al);
+                string originalLineIndexes = new Output().GetKwicShiftedOriginalLineIndices(al);
                 DataLayer.StoreLines("output.txt", output);
                 DataLayer.StoreLines("shiftedOriginalLines.txt", originalLineIndexes);
                 return Ok(new { data = output});

@@ -18,14 +18,14 @@ namespace KWICWeb.SharedDataKWIC
             return string.Join('\n', tempList);
         }
 
-        public string GetKwicShiftedOriginalLineNumbers(AlphabeticShifter alphShifter)
+        public string GetKwicShiftedOriginalLineIndices(AlphabeticShifter alphShifter)
         {
             List<string> tempList = new List<string>();
 
             int alphIndex = 0;
             while (alphShifter.IndexOfShift(alphIndex) != -1)
             {
-                tempList.Add(alphShifter.GetOriginalLineNumber(alphShifter.IndexOfShift(alphIndex)).ToString());
+                tempList.Add(alphShifter.GetOriginalLineIndex(alphShifter.IndexOfShift(alphIndex)).ToString());
                 alphIndex++;
             }
 
