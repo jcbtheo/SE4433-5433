@@ -2,7 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>9aef8196-ede8-40d5-8d9b-c494213a25ef</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="NoiseWords.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NoiseWords.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />

@@ -18,7 +18,7 @@ namespace KWICWeb.Controllers
                 LineStorage store = new LineStorage();
                 input.Store(store, inputData);
                 CircularShifter cs = new CircularShifter(store);
-                cs.SetFilterWords(@"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\NoiseWords.txt");
+                cs.SetFilterWords(@"NoiseWords.txt");
                 cs.Shift();
                 AlphabeticShifter al = new AlphabeticShifter(cs);
                 al.Alph();

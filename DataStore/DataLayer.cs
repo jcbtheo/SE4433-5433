@@ -5,11 +5,11 @@ namespace DataStore
 {
     public static class DataLayer
     {
-        private static string basePath = @"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\";
+        //private static string basePath = @"C:\Users\Jacob\Documents\School\Software Architecture and Design\SE4433-5433\KWICWeb\";
 
         public static void StoreLines(string filename, string lines)
         {
-            using (StreamWriter dataBaseFile = new StreamWriter(basePath + filename, false))
+            using (StreamWriter dataBaseFile = new StreamWriter(filename, false))
             {
                 dataBaseFile.WriteLine(lines);
             }
@@ -18,7 +18,7 @@ namespace DataStore
         public static List<string> RetrieveLines(string filename)
         {
             List<string> lines = new List<string>();
-            foreach (string line in File.ReadLines(basePath + filename))
+            foreach (string line in File.ReadLines(filename))
             {
                 lines.Add(line);
             }
